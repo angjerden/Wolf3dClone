@@ -39,7 +39,7 @@ public class MainComponent {
         final double frameTime = 1.0 / FRAME_CAP; //The amount of time one frame takes
 
         long lastTime = Time.getTime(); //lastTime is the time the previous frame started drawing
-        double unprocessedTime = 0; //how much time I still need to process ??
+        double unprocessedTime = 0; //how much time we still need to process
 
         while(isRunning) {
             boolean render = false;
@@ -59,12 +59,13 @@ public class MainComponent {
                 }
 
                 Time.setDelta(frameTime);
+                Input.update();
 
                 game.input();
                 game.update();
 
                 if(frameCounter >= Time.SECOND) {
-                    System.out.println(frames);
+                    System.out.println("fps: " + frames);
                     frames = 0;
                     frameCounter = 0;
 
