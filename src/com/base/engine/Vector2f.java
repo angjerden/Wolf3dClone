@@ -10,10 +10,24 @@ public class Vector2f {
         this.y = y;
     }
 
+    /**
+     * Calculates the length of the vector using the Pythagorean theorem
+     *
+     * @return length of the vector as a float
+     */
     public float length() {
-        return (float)Math.sqrt(x*x + y*y);
+        return (float)Math.sqrt(x * x + y * y);
     }
 
+    /**
+     * Multiplies one vector with another:
+     * a scalar function of two vectors, equal to
+     * the product of their magnitudes and the cosine
+     * of the angle between them.
+     *
+     * @param r The input vector to be "dot produced" with
+     * @return the effect on  as a float
+     */
     public float dot(Vector2f r) {
         return x * r.getX() + y * r.getY();
     }

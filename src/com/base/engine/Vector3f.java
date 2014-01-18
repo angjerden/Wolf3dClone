@@ -20,6 +20,12 @@ public class Vector3f {
         return x * r.getX() + y * r.getY() + z * getZ();
     }
 
+    /**
+     * The Cross Product of two vectors is another vector that is at
+     * the right angles of both vectors
+     * @param r The input vector to be "cross produced" with
+     * @return The vector which is at the right angles of both vectors
+     */
     public Vector3f cross(Vector3f r) {
         float x_ = y * r.getZ() - z * r.getY();
         float y_ = z * r.getX() - x * r.getZ();
