@@ -11,6 +11,7 @@ public class MainComponent {
     private Game game;
 
     public MainComponent() {
+        RenderUtil.initGraphics();
         isRunning = false;
         game = new Game();
     }
@@ -59,9 +60,10 @@ public class MainComponent {
                 }
 
                 Time.setDelta(frameTime);
-                Input.update();
 
                 game.input();
+                Input.update();
+
                 game.update();
 
                 if(frameCounter >= Time.SECOND) {
@@ -88,6 +90,7 @@ public class MainComponent {
     }
 
     private void render() {
+        RenderUtil.clearScreen();
         game.render();
         Window.render();
     }
