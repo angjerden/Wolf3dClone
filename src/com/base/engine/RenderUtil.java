@@ -34,4 +34,8 @@ public class RenderUtil {
         glEnable(GL_FRAMEBUFFER_SRGB); //free gamma correction
                                         //exponential correction
     }
+
+    public static String getOpenGLVersion() {
+        return glGetString(GL_VERSION);
+    }
 }
