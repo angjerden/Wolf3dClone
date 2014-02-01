@@ -1,6 +1,6 @@
 #version 330
 
-//retrieving vertex data from vertexattribarray 0
+//retrieving vertex data from vertexattribarray 0 (location = 0)
 //in = input
 //datatype vec3 (vector3)
 //position is the variable name, will contain every individual vertex
@@ -8,7 +8,7 @@ layout (location = 0) in vec3 position;
 
 out vec4 color; //outputting
 
-uniform mat4 transform;
+uniform mat4 transform; //should contain all our translation, rotation and scale
 
 void main() 
 {
