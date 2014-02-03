@@ -8,12 +8,15 @@ public class Game {
     private Mesh mesh;
     private Shader shader;
     private Transform transform;
+    private Camera camera;
 
     public Game() {
         mesh = ResourceLoader.loadMesh("box.obj");
         shader = new Shader();
+        camera = new Camera();
 
         transform = new Transform();
+        transform.setCamera(camera);
         transform.setProjection(70f,
                 Window.getWidth(),
                 Window.getHeight(),
@@ -28,7 +31,8 @@ public class Game {
     }
 
     public void input() {
-        if(Input.getKeyDown(Keyboard.KEY_UP)) {
+        camera.input();
+/*        if(Input.getKeyDown(Keyboard.KEY_UP)) {
             System.out.println("We've just pressed up!");
         }
 
@@ -41,7 +45,7 @@ public class Game {
         }
         if(Input.getMouseUp(1)) {
             System.out.println("We've just released right mouse button!");
-        }
+        }*/
     }
 
     float temp = 0.0f;

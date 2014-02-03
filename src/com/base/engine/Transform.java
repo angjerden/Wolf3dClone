@@ -12,6 +12,8 @@ import org.lwjgl.util.vector.*;
  * A way to represent this is through matrices.
  */
 public class Transform {
+    private static Camera camera;
+
     //Variables for projection
     private static float zNear; //how close an object has to be to us,
                                 //before it clips
@@ -54,7 +56,15 @@ public class Transform {
                 height,
                 zNear,
                 zFar);
-        return projectionMatrix.mul(transformationMatrix);
+        Matrix4f cameraRotation = new Matrix4f().initCamera(
+                camera.getForward(), camera.getUp()
+        );
+        Matrix4f cameraTranslation = new Matrix4f().initTranslation(
+                -camera.getPos().getX(),
+                -camera.getPos().getY(),
+                -camera.getPos().getZ()
+        );
+        return projectionMatrix.mul(cameraRotation.mul(cameraTranslation.mul(transformationMatrix)));
     }
 
     public Vector3f getTranslation() {
@@ -103,5 +113,13 @@ public class Transform {
 
     public void setScale(float x, float y, float z) {
         this.scale = new Vector3f(x, y, z);
+    }
+
+    public static Camera getCamera() {
+        return camera;
+    }
+
+    public static void setCamera(Camera camera) {
+        Transform.camera = camera;
     }
 }
