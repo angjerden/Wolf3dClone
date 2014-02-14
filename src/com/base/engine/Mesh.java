@@ -35,14 +35,20 @@ public class Mesh {
     public void draw() {
         glEnableVertexAttribArray(0);
             //Enable or disable a generic vertex attribute array
+        glEnableVertexAttribArray(1);
 
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
         //multiplying by 4 because one float is 4 bytes
         glVertexAttribPointer(0, 3, GL_FLOAT, false, Vertex.SIZE * 4, 0);
+        long buffer_buffer_offset = 3 * 4; //number of vertices * size of a float in bytes
+                //because we want to start at the texture data
+        glVertexAttribPointer(1, 2, GL_FLOAT, false, Vertex.SIZE * 4, buffer_buffer_offset);
+
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
         glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_INT, 0);
 
         glDisableVertexAttribArray(0);
+        glDisableVertexAttribArray(1);
     }
 }

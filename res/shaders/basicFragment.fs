@@ -1,10 +1,10 @@
 #version 330
 
-in vec4 color;
+in vec2 texCoord0;
 
-out vec4 fragColor;
+uniform sampler2D sampler; //where to read texture data from
 
 void main() 
 {
-	fragColor = color; //vec4(0.0, 1.0, 1.0, 1.0); //cyan
+	gl_FragColor = texture2D(sampler, texCoord0.xy);
 }

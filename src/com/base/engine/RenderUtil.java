@@ -17,6 +17,18 @@ public class RenderUtil {
     }
 
     /**
+     * Enabling or disabling the textures
+     * @param enabled
+     */
+    public static void setTextures(boolean enabled) {
+        if(enabled) {
+            glEnable(GL_TEXTURE_2D);
+        } else {
+            glDisable(GL_TEXTURE_2D);
+        }
+    }
+
+    /**
      * set everything to default values
      */
     public static void initGraphics() {
@@ -31,6 +43,7 @@ public class RenderUtil {
 
         //TODO: Depth clamp for later
 
+        glEnable(GL_TEXTURE_2D); //enabling and using textures
         glEnable(GL_FRAMEBUFFER_SRGB); //free gamma correction
                                         //exponential correction
     }
