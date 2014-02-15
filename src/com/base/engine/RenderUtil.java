@@ -28,6 +28,14 @@ public class RenderUtil {
         }
     }
 
+    public static void unbindTextures() {
+        glBindTexture(GL_TEXTURE_2D, 0);
+    }
+
+    public static void setClearColor(Vector3f color) {
+        glClearColor(color.getX(), color.getY(), color.getZ(), 1.0f);
+    }
+
     /**
      * set everything to default values
      */
