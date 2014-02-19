@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class Util {
 
     /**
-     * Wrapper method for creating a
+     * Wrapper method for creating a FloatBuffer
      * @param size
      * @return
      */
@@ -42,6 +42,9 @@ public class Util {
             buffer.put(vertices[i].getPos().getZ());
             buffer.put(vertices[i].getTexCoord().getX());
             buffer.put(vertices[i].getTexCoord().getY());
+            buffer.put(vertices[i].getNormal().getX());
+            buffer.put(vertices[i].getNormal().getY());
+            buffer.put(vertices[i].getNormal().getZ());
         }
 
         buffer.flip(); //puts the buffer in the proper order
