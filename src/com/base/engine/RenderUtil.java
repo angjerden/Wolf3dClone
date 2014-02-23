@@ -2,6 +2,7 @@ package com.base.engine;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL32.*;
 
 public class RenderUtil {
 
@@ -49,10 +50,10 @@ public class RenderUtil {
                                 // renders back sides of things
         glEnable(GL_DEPTH_TEST); //determining draw order
 
-        //TODO: Depth clamp for later
+        glEnable(GL_DEPTH_CLAMP); //Prevents the camera from clipping through the mesh
 
         glEnable(GL_TEXTURE_2D); //enabling and using textures
-        glEnable(GL_FRAMEBUFFER_SRGB); //free gamma correction
+        //glEnable(GL_FRAMEBUFFER_SRGB); //free gamma correction
                                         //exponential correction
     }
 
