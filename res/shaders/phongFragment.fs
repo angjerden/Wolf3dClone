@@ -1,6 +1,7 @@
 #version 330
 
 const int MAX_POINT_LIGHTS = 4; //number of lights affecting a single pixel
+const int MAX_SPOT_LIGHTS = 4;
 
 in vec2 texCoord0;
 in vec3 normal0; //up direction of a vertex
@@ -35,6 +36,13 @@ struct PointLight
     float range; //the maximum distance a pixel can be from the point and still be affected
 };
 
+struct SpotLight //has a point of origin and shines in a cone fashion
+{
+    PointLight pointLight;
+    vec3 direction;
+    float cutoff; //where the edge of the spotlight is, where does the cone end
+};
+
 uniform vec3 baseColor; //a basic color which is subject to change from lighting
 uniform vec3 eyePos; //where our camera is
 uniform vec3 ambientLight; //a constant light amount applied to everything
@@ -45,6 +53,7 @@ uniform float specularPower;
 
 uniform DirectionalLight directionalLight;
 uniform PointLight pointLights[MAX_POINT_LIGHTS];
+uniform SpotLight spotLights[MAX_SPOT_LIGHTS];
 
 //normal - the up direction
 vec4 calcLight(BaseLight base, vec3 direction, vec3 normal)
@@ -103,6 +112,22 @@ vec4 calcPointLight(PointLight pointLight, vec3 normal)
     return color / attenuation;
 }
 
+vec4 calcSpotLight(SpotLight spotLight, vec3 normal)
+{
+    vec3 lightDirection = normalize(worldPos0 - spotLight.pointLight.position);
+    float spotFactor = dot(lightDirection, spotLight.direction);
+
+    vec4 color = vec4(0, 0, 0, 0);
+
+    if(spotFactor > spotLight.cutoff) //if the pixel is within the cone
+    {
+        color = calcPointLight(spotLight.pointLight, normal) *
+                (1.0 - (1.0 - spotFactor)/(1.0 - spotLight.cutoff));
+    }
+
+    return color;
+}
+
 void main()
 {
     vec4 totalLight = vec4(ambientLight, 1);
@@ -123,6 +148,14 @@ void main()
         if(pointLights[i].base.intensity > 0)
         {
             totalLight += calcPointLight(pointLights[i], normal);
+        }
+    }
+
+    for(int i = 0; i < MAX_SPOT_LIGHTS; i++)
+    {
+        if(spotLights[i].pointLight.base.intensity > 0)
+        {
+            totalLight += calcSpotLight(spotLights[i], normal);
         }
     }
 
