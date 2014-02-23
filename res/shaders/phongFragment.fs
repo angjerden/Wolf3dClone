@@ -32,6 +32,7 @@ struct PointLight
     BaseLight base;
     Attenuation atten;
     vec3 position;
+    float range; //the maximum distance a pixel can be from the point and still be affected
 };
 
 uniform vec3 baseColor; //a basic color which is subject to change from lighting
@@ -84,6 +85,12 @@ vec4 calcPointLight(PointLight pointLight, vec3 normal)
 {
     vec3 lightDirection = worldPos0 - pointLight.position; //which direction the light is in
     float distanceToPoint = length(lightDirection);
+
+    if(distanceToPoint > pointLight.range)
+    {
+        return vec4(0, 0, 0, 0);
+    }
+
     lightDirection = normalize(lightDirection);
 
     vec4 color = calcLight(pointLight.base, lightDirection, normal);
@@ -113,7 +120,10 @@ void main()
 
     for(int i = 0; i < MAX_POINT_LIGHTS; i++)
     {
-        totalLight += calcPointLight(pointLights[i], normal);
+        if(pointLights[i].base.intensity > 0)
+        {
+            totalLight += calcPointLight(pointLights[i], normal);
+        }
     }
 
     fragColor = color * totalLight;

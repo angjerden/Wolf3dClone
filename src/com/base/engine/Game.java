@@ -16,15 +16,15 @@ public class Game {
                     new Vector3f(1, 0.5f, 0),
                     0.8f),
             new Attenuation(0, 0, 1),
-            new Vector3f(-2, 0, 5f)
-            );
+            new Vector3f(-2, 0, 5f),
+            10);
     PointLight pLight2 = new PointLight(
                     new BaseLight(
                             new Vector3f(0, 0.5f, 1),
                             0.8f),
                     new Attenuation(0, 0, 1),
-                    new Vector3f(2, 0, 7f)
-                    );
+                    new Vector3f(2, 0, 7f),
+                    10);
 
     public Game() {
         mesh = new Mesh(); //ResourceLoader.loadMesh("box.obj");
@@ -113,7 +113,7 @@ public class Game {
 
         float sinTemp = (float) Math.sin(temp);
 
-        transform.setTranslation(0, (float)-Math.abs(Math.sin(temp) * 5), 5);
+        transform.setTranslation(0, -1, 5);
         //transform.setRotation(0, sinTemp * 180, 0);
         //transform.setScale(0.7f * sinTemp, 0.7f * sinTemp, 0.7f * sinTemp);
 

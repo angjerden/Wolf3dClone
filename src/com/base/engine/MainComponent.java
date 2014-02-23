@@ -5,7 +5,7 @@ public class MainComponent {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 800;
     public static final String TITLE = "3D Engine";
-    public static final double FRAME_CAP = 100.0;
+    public static final double FRAME_CAP = 3000.0;
 
     private boolean isRunning;
     private Game game;
