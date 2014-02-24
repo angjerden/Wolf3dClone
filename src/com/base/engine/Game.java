@@ -38,8 +38,8 @@ public class Game {
             0.7f);
 
     public Game() {
-        mesh = new Mesh(); //ResourceLoader.loadMesh("box.obj");
-        material = new Material(ResourceLoader.loadTexture("test.png"),
+        //mesh = new Mesh("box.obj");
+        material = new Material(new Texture("test.png"),
                 new Vector3f(1, 1, 1), 1, 8);
         shader = PhongShader.getInstance();
         camera = new Camera();
@@ -81,7 +81,7 @@ public class Game {
               	                  2, 1, 3};
 
 
-        mesh.addVertices(vertices, indices, true);
+        mesh = new Mesh(vertices, indices, true);
 
         transform.setCamera(camera);
         transform.setProjection(70f,
@@ -90,13 +90,13 @@ public class Game {
                 0.1f,
                 1000);
         PhongShader.setAmbientLight(new Vector3f(0.1f, 0.1f, 0.1f));
-        /*PhongShader.setDirectionalLight(
+        PhongShader.setDirectionalLight(
                 new DirectionalLight(
                             new BaseLight(new Vector3f(1, 1, 1), 0.8f),
                             new Vector3f(1, 1, 1)
-                    ));*/
+                    ));
 
-        //PhongShader.setPointLights(new PointLight[] {pLight1, pLight2});
+        PhongShader.setPointLights(new PointLight[] {pLight1, pLight2});
         PhongShader.setSpotLights(new SpotLight[] {sLight1});
     }
 
