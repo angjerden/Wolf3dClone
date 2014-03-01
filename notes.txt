@@ -1,0 +1,17 @@
+Big Topics:
+- Rendering Engine
+
+
+- Some way to insert game into engine
+- Better scratchpad/sandbox support
+- Better textures (reading, blitting, basic image processing)
+- Some way to separate game and engine data
+- Add higher level rendering constructs
+    (Shaders, Materials, Transforms, Meshes)
+    Avoid managing low-level rendering.
+- Add some form of automatic shader selection
+- Add some form of primitives
+    (Rectangles, spheres, triangles)
+- More flexible transform class
+    We shouldn't need to set up: perspective projection, camera
+- Non-perspective views: (orthogonal views)
