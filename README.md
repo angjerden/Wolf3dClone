@@ -1,10 +1,10 @@
 3dgameengine
 ============
 
-thebennybox's implementation of a 3d game engine using LWJGL
+A Wolfenstein 3D Clone based on thebennybox's 3D Game Engine in LWJGL
 
-Youtube playlist for his 3D Game Engine Development Tutorial:
-http://www.youtube.com/playlist?list=PLEETnX-uPtBXP_B2yupUKlflXBznWIlL5
+Youtube playlist for his Wolfenstein 3D Clone Tutorial:
+http://www.youtube.com/playlist?list=PLEETnX-uPtBV7jIbAZNCulZM1cGxJRGYs
 
 Check out thebennybox's Youtube channel for other tutorials :
 http://www.youtube.com/user/thebennybox
