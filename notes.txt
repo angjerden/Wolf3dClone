@@ -15,3 +15,4 @@ Big Topics:
 - More flexible transform class
     We shouldn't need to set up: perspective projection, camera
 - Non-perspective views: (orthogonal views)
+- Texture manipulation (Translation, rotation, scale)
