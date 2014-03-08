@@ -17,6 +17,9 @@ public class Game {
     private static final float SPOT_LENGTH = 1;
     private static final float SPOT_HEIGHT = 1;
 
+    private static final int NUM_TEX_EXP = 4; //Number of rows of textures
+    private static final int NUM_TEXTURES = (int) Math.pow(2, NUM_TEX_EXP);
+
     public Game() {
         level = new Bitmap("level1.png").flipY();
 
@@ -28,7 +31,7 @@ public class Game {
         }*/
 
         shader = BasicShader.getInstance();
-        material = new Material(new Texture("test.png"));
+        material = new Material(new Texture("WolfCollection.png"));
 
         ArrayList<Vertex> vertices = new ArrayList<Vertex>();
         ArrayList<Integer> indices = new ArrayList<Integer>();
@@ -41,10 +44,15 @@ public class Game {
                     continue;
                 }
 
-                float XHigher = 1;
-                float XLower = 0;
-                float YHigher = 1;
-                float YLower = 0;
+                //integer coordinates for the textures
+                int texX = ((level.getPixel(i, j) & 0x00FF00) >> 8) / NUM_TEXTURES; //getting the green component
+                int texY = texX % NUM_TEX_EXP;
+                texX /= NUM_TEX_EXP;
+
+                float XHigher = 1f - (float) texX / (float) NUM_TEX_EXP;
+                float XLower = XHigher - 1f / (float) NUM_TEX_EXP;
+                float YLower = 1f - (float) texY / (float) NUM_TEX_EXP;
+                float YHigher = YLower - 1f / (float) NUM_TEX_EXP;
 
                 //Generate floor
                 indices.add(vertices.size() + 2);
@@ -53,7 +61,6 @@ public class Game {
                 indices.add(vertices.size() + 3);
                 indices.add(vertices.size() + 2);
                 indices.add(vertices.size() + 0);
-
 
                 vertices.add(new Vertex(
                         new Vector3f(i * SPOT_WIDTH, 0, j * SPOT_LENGTH),
@@ -76,7 +83,6 @@ public class Game {
                 indices.add(vertices.size() + 2);
                 indices.add(vertices.size() + 3);
 
-
                 vertices.add(new Vertex(
                         new Vector3f(i * SPOT_WIDTH, SPOT_HEIGHT, j * SPOT_LENGTH),
                         new Vector2f(XLower, YLower)));
@@ -89,6 +95,15 @@ public class Game {
                 vertices.add(new Vertex(
                         new Vector3f(i * SPOT_WIDTH, SPOT_HEIGHT, (j + 1) * SPOT_LENGTH),
                         new Vector2f(XLower, YHigher)));
+
+                texX = ((level.getPixel(i, j) & 0xFF0000) >> 16) / NUM_TEXTURES; //getting the green component
+                texY = texX % NUM_TEX_EXP;
+                texX /= NUM_TEX_EXP;
+
+                XHigher = 1f - (float) texX / (float) NUM_TEX_EXP;
+                XLower = XHigher - 1f / (float) NUM_TEX_EXP;
+                YLower = 1f - (float) texY / (float) NUM_TEX_EXP;
+                YHigher = YLower - 1f / (float) NUM_TEX_EXP;
 
                 //Generate walls
                 if ((level.getPixel(i, j - 1) & 0xFFFFFF) == 0) {

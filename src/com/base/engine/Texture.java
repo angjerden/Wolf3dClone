@@ -40,7 +40,8 @@ public class Texture {
             int id = TextureLoader.getTexture(
                     ext,
                     new FileInputStream(
-                            new File("./res/textures/" + fileName)))
+                            new File("./res/textures/" + fileName)),
+                    GL_NEAREST)
             .getTextureID();
 
             return id;
