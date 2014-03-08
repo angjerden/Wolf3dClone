@@ -16,3 +16,4 @@ Big Topics:
     We shouldn't need to set up: perspective projection, camera
 - Non-perspective views: (orthogonal views)
 - Texture manipulation (Translation, rotation, scale)
+- More control over textures (Filtering, formatting)
