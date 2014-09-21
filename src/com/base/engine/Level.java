@@ -127,7 +127,7 @@ public class Level {
                     new Vector3f(offset * SPOT_WIDTH, (xPos + 1) * SPOT_HEIGHT, zPos * SPOT_LENGTH),
                     new Vector2f(XLower, YHigher)));
         } else {
-            System.out.println("You'd done screwed up now! Invalid plane used in level generator");
+            System.out.println("You've done screwed up now! Invalid plane used in level generator");
             new Exception().printStackTrace();
             System.exit(1);
         }
