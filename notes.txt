@@ -22,3 +22,9 @@ Big Topics:
 - Better vector math (normalization, +=, commonly used Vector constants, swizzling support)
 - Options class/system, some place to read values that the player chooses
 - Centralized "level" or "scene" class that holds the data the game is using
+- Game object class
+- Make all positioning names "position"
+- Make naming more consistent
+
+- Eventually, make easier way to generate mesh
+- Eventually, make easy way of generating texture coordinates

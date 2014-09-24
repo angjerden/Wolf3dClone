@@ -9,6 +9,9 @@ public class Level {
     private Material material;
     private Transform transform;
 
+    //Temp variable
+    private Door door;
+
     private static final float SPOT_WIDTH = 1;
     private static final float SPOT_LENGTH = 1;
     private static final float SPOT_HEIGHT = 1;
@@ -25,6 +28,11 @@ public class Level {
         shader = BasicShader.getInstance();
 
         generateLevel();
+
+        //Temporary door
+        Transform tempTransform = new Transform();
+        tempTransform.setTranslation(new Vector3f(10.5f, 0, 9f));
+        door = new Door(tempTransform, material);
     }
 
     public void input() {
@@ -32,7 +40,7 @@ public class Level {
     }
 
     public void update() {
-
+        door.update();
     }
 
     public void render() {
@@ -41,6 +49,7 @@ public class Level {
                 transform.getProjectedTransformation(),
                 material);
         mesh.draw();
+        door.render();
     }
 
     public Vector3f checkCollision(Vector3f oldPos, Vector3f newPos, float objectWidth, float objectLength) {
@@ -54,6 +63,7 @@ public class Level {
             Vector2f oldPos2 = new Vector2f(oldPos.getX(), oldPos.getZ());
             Vector2f newPos2 = new Vector2f(newPos.getX(), newPos.getZ());
 
+            //Checking for block/wall collision
             for (int i = 0; i < level.getWidth(); i++) {
                 for (int j = 0; j < level.getHeight(); j++) {
                     if ((level.getPixel(i, j) & 0xFFFFFF) == 0) {
@@ -61,6 +71,12 @@ public class Level {
                     }
                 }
             }
+
+            //Checking for door collision
+            Vector2f doorSize = new Vector2f(Door.LENGTH, Door.WIDTH);
+            Vector3f doorPos3f = door.getTransform().getTranslation();
+            Vector2f doorPos2f = new Vector2f(doorPos3f.getX(), doorPos3f.getZ());
+            collisionVector = collisionVector.mul(rectCollide(oldPos2, newPos2, objectSize, doorPos2f, doorSize));
         }
 
         return new Vector3f(collisionVector.getX(), 0, collisionVector.getY()); //returning Y on the Z-axis since
@@ -236,5 +252,9 @@ public class Level {
         indices.toArray(indicesArray);
 
         mesh = new Mesh(vertArray, Util.toIntArray(indicesArray));
+    }
+
+    public Shader getShader() {
+        return shader;
     }
 }
