@@ -10,7 +10,8 @@ public class Level {
     private Transform transform;
 
     //Temp variable
-    private Door door;
+    //private Door door;
+    private ArrayList<Door> doors;
 
     private static final float SPOT_WIDTH = 1;
     private static final float SPOT_LENGTH = 1;
@@ -26,13 +27,14 @@ public class Level {
         transform = new Transform();
 
         shader = BasicShader.getInstance();
+        doors = new ArrayList<Door>();
 
         generateLevel();
 
         //Temporary door
-        Transform tempTransform = new Transform();
-        tempTransform.setTranslation(new Vector3f(10.5f, 0, 9f));
-        door = new Door(tempTransform, material);
+//        Transform tempTransform = new Transform();
+//        tempTransform.setTranslation(new Vector3f(10.5f, 0, 9f));
+//        door = new Door(tempTransform, material);
     }
 
     public void input() {
@@ -40,7 +42,9 @@ public class Level {
     }
 
     public void update() {
-        door.update();
+        for(Door door : doors) {
+            door.update();
+        }
     }
 
     public void render() {
@@ -49,7 +53,9 @@ public class Level {
                 transform.getProjectedTransformation(),
                 material);
         mesh.draw();
-        door.render();
+        for(Door door : doors) {
+            door.render();
+        }
     }
 
     public Vector3f checkCollision(Vector3f oldPos, Vector3f newPos, float objectWidth, float objectLength) {
@@ -73,10 +79,10 @@ public class Level {
             }
 
             //Checking for door collision
-            Vector2f doorSize = new Vector2f(Door.LENGTH, Door.WIDTH);
-            Vector3f doorPos3f = door.getTransform().getTranslation();
-            Vector2f doorPos2f = new Vector2f(doorPos3f.getX(), doorPos3f.getZ());
-            collisionVector = collisionVector.mul(rectCollide(oldPos2, newPos2, objectSize, doorPos2f, doorSize));
+//            Vector2f doorSize = new Vector2f(Door.LENGTH, Door.WIDTH);
+//            Vector3f doorPos3f = door.getTransform().getTranslation();
+//            Vector2f doorPos2f = new Vector2f(doorPos3f.getX(), doorPos3f.getZ());
+//            collisionVector = collisionVector.mul(rectCollide(oldPos2, newPos2, objectSize, doorPos2f, doorSize));
         }
 
         return new Vector3f(collisionVector.getX(), 0, collisionVector.getY()); //returning Y on the Z-axis since
@@ -201,6 +207,38 @@ public class Level {
         }
     }
 
+    private void addDoor(int x, int y) {
+        Transform doorTransform = new Transform();
+
+        //should the door be aligned on the x-axis (facing the y-axis)
+        boolean xDoor = ((level.getPixel(x, y - 1) & 0xFFFFFF) == 0) && ((level.getPixel(x, y + 1) & 0xFFFFFF) == 0);
+
+        boolean yDoor = ((level.getPixel(x - 1, y) & 0xFFFFFF) == 0) && ((level.getPixel(x + 1, y) & 0xFFFFFF) == 0);
+
+        if (!(xDoor ^ yDoor)) { //if neither or both are true
+            System.err.println("Invalid door placement at " + x + " " + y + ", level generation has failed");
+            new Exception().printStackTrace();
+            System.exit(1);
+        }
+
+        if (yDoor) {
+            doorTransform.setTranslation(x, 0, y + SPOT_LENGTH / 2);
+        }
+
+        if (xDoor) {
+            doorTransform.setTranslation(x + SPOT_LENGTH / 2, 0, y);
+            doorTransform.setRotation(0, 90, 0); //rotate it into its proper position
+        }
+
+        doors.add(new Door(doorTransform, material));
+    }
+
+    private void addSpecial(int blueValue, int x, int y) {
+        if (blueValue == 16) {
+            addDoor(x, y);
+        }
+    }
+
     private void generateLevel() {
         ArrayList<Vertex> vertices = new ArrayList<Vertex>();
         ArrayList<Integer> indices = new ArrayList<Integer>();
@@ -214,6 +252,8 @@ public class Level {
                 }
 
                 float[] texCoords = calcTexCoords(((level.getPixel(i, j) & 0x00FF00) >> 8));
+
+                addSpecial((level.getPixel(i, j) & 0x0000FF), i, j); //masking out all the blue color
 
                 //Generate floor
                 addFace(indices, vertices.size(), true);

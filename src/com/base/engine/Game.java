@@ -12,7 +12,7 @@ public class Game {
 
     public Game() {
 
-        level = new Level("level1.png", "WolfCollection.png");
+        level = new Level("level1-doors.png", "WolfCollection.png");
         player = new Player(new Vector3f(8.5f, 0.4375f, 8.5f));
         Transform.setProjection(70, Window.getWidth(), Window.getHeight(), 0.01f, 1000f);
         Transform.setCamera(player.getCamera());
