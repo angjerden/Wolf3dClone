@@ -6,14 +6,29 @@ public class Door {
     public static final float HEIGHT = 1;
     public static final float WIDTH = 0.125f;
     public static final float START = 0;
+    public static final double TIME_TO_OPEN = 1.0;
+    private static final double CLOSE_DELAY = 2.0;
 
     private static Mesh mesh; //static because same mesh for every door
     private Material material;
     private Transform transform;
 
-    public Door(Transform transform, Material material) {
+    private Vector3f openPosition;
+    private Vector3f closePosition;
+
+    private boolean isOpening;
+    private double openingStartTime; //the time when the door starts opening
+    private double openTime; //the time when the door is fully open
+    private double closingStartTime; //the time the door starts closing
+    private double closeTime; //the time when the door is fully closed
+
+    public Door(Transform transform, Material material, Vector3f openPosition) {
         this.transform = transform;
         this.material = material;
+        this.isOpening = false;
+        this.closePosition = transform.getTranslation().mul(1); //make a copy of
+        this.openPosition = openPosition;
+
         if (mesh == null) {
             //door mesh
 
@@ -57,8 +72,43 @@ public class Door {
         }
     }
 
-    public void update() {
+    public void open() {
+        if (isOpening)
+            return;
 
+        openingStartTime = (double) Time.getTime()/(double)Time.SECOND;
+        openTime = openingStartTime + TIME_TO_OPEN;
+        closingStartTime = openTime + CLOSE_DELAY;
+        closeTime = closingStartTime + TIME_TO_OPEN;
+
+        isOpening = true;
+    }
+
+    //Lerp = Linear interpolation
+    private Vector3f VectorLerp(Vector3f startPos, Vector3f endPos, float lerpFactor) {
+        return startPos.add(endPos.sub(startPos).mul(lerpFactor));
+    }
+
+    public void update() {
+        if (isOpening) {
+            double time = (double) Time.getTime()/(double)Time.SECOND;
+
+            if (time < openTime) {
+                float lerpFactor = (float)((time - openingStartTime) / TIME_TO_OPEN); //how much to interpolate by
+                getTransform().setTranslation(VectorLerp(closePosition, openPosition, lerpFactor));
+            }
+            else if (time < closingStartTime) {
+                getTransform().setTranslation(openPosition);
+            }
+            else if (time < closeTime) {
+                float lerpFactor = (float)((time - closingStartTime) / TIME_TO_OPEN); //how much to interpolate by
+                getTransform().setTranslation(VectorLerp(openPosition, closePosition, lerpFactor));
+            }
+            else {
+                getTransform().setTranslation(closePosition);
+                isOpening = false;
+            }
+        }
     }
 
     public void render() {
@@ -66,6 +116,15 @@ public class Door {
         shader.updateUniforms(transform.getTransformation(), transform.getProjectedTransformation(), material);
         //TODO: Bind/update shader
         mesh.draw();
+    }
+
+    public Vector2f getDoorSize() {
+        if (getTransform().getRotation().getY() == 90){
+            return new Vector2f(Door.WIDTH, Door.LENGTH);
+        } else {
+            return new Vector2f(Door.LENGTH, Door.WIDTH);
+        }
+
     }
 
     public Transform getTransform() {

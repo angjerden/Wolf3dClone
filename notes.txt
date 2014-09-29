@@ -25,6 +25,9 @@ Big Topics:
 - Game object class
 - Make all positioning names "position"
 - Make naming more consistent
+- Make all time based on seconds rather than nanoseconds
+- Give vectors a copy constructor
+- Give vectors an interpolation method
 
 - Eventually, make easier way to generate mesh
 - Eventually, make easy way of generating texture coordinates
